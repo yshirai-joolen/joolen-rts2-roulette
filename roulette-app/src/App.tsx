@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Roulette from './components/Roulette';
 import ItemManager from './components/ItemManager';
 import ResultModal from './components/ResultModal';
+import History from './components/History';
 
 interface RouletteItem {
   id: number;
   label: string;
   color: string;
+}
+
+interface HistoryItem {
+  id: number;
+  item: RouletteItem;
+  timestamp: Date;
 }
 
 function App() {
@@ -22,10 +29,46 @@ function App() {
 
   const [result, setResult] = useState<RouletteItem | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+
+  // ローカルストレージから履歴を読み込み
+  useEffect(() => {
+    const savedHistory = localStorage.getItem('roulette-history');
+    if (savedHistory) {
+      try {
+        const parsedHistory = JSON.parse(savedHistory).map((item: any) => ({
+          ...item,
+          timestamp: new Date(item.timestamp)
+        }));
+        setHistory(parsedHistory);
+      } catch (error) {
+        console.error('履歴の読み込みに失敗しました:', error);
+      }
+    }
+  }, []);
+
+  // 履歴をローカルストレージに保存
+  useEffect(() => {
+    if (history.length > 0) {
+      localStorage.setItem('roulette-history', JSON.stringify(history));
+    }
+  }, [history]);
 
   const handleResult = (item: RouletteItem) => {
+    const newHistoryItem: HistoryItem = {
+      id: Date.now(),
+      item,
+      timestamp: new Date()
+    };
+    
+    setHistory(prev => [newHistoryItem, ...prev]);
     setResult(item);
     setIsResultModalOpen(true);
+  };
+
+  const clearHistory = () => {
+    setHistory([]);
+    localStorage.removeItem('roulette-history');
   };
 
   const closeResultModal = () => {
@@ -54,6 +97,10 @@ function App() {
           
           <div className="manager-section">
             <ItemManager items={items} onItemsChange={setItems} />
+          </div>
+          
+          <div className="history-section">
+            <History history={history} onClearHistory={clearHistory} />
           </div>
         </div>
       </main>

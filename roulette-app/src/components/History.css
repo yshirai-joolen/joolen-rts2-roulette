@@ -1,0 +1,213 @@
+.history-container {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.history-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.clear-button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.clear-button:hover {
+  background: #c0392b;
+}
+
+.history-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 200px;
+}
+
+.no-history-message {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border-radius: 5px;
+  border: 1px dashed #ddd;
+  line-height: 1.5;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease;
+}
+
+.history-item:hover {
+  transform: translateX(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.history-rank {
+  font-weight: bold;
+  color: #666;
+  min-width: 30px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.history-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #ddd;
+  flex-shrink: 0;
+}
+
+.history-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.history-name {
+  font-weight: bold;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 2px;
+}
+
+.history-time {
+  font-size: 11px;
+  color: #888;
+  font-family: monospace;
+}
+
+.history-more {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 15px;
+  border-top: 1px dashed #ddd;
+  margin-top: 10px;
+}
+
+.history-stats {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #e9ecef;
+}
+
+.stats-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats-label {
+  color: #666;
+  font-size: 14px;
+}
+
+.stats-value {
+  font-weight: bold;
+  color: #333;
+  background: #e3f2fd;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* スクロールバーのスタイリング */
+.history-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.history-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.history-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .history-container {
+    padding: 15px;
+    max-height: 400px;
+  }
+  
+  .history-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  
+  .history-header h3 {
+    text-align: center;
+  }
+  
+  .clear-button {
+    align-self: center;
+    width: fit-content;
+  }
+  
+  .history-item {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .history-rank {
+    min-width: 25px;
+    font-size: 12px;
+  }
+  
+  .history-name {
+    font-size: 13px;
+  }
+  
+  .history-time {
+    font-size: 10px;
+  }
+  
+  .no-history-message {
+    padding: 30px 15px;
+    font-size: 14px;
+  }
+}
