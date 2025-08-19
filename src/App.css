@@ -47,9 +47,56 @@
 
 .roulette-section {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 500px;
+  gap: 20px;
+}
+
+.roulette-controls {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.exclusion-mode-toggle {
+  text-align: center;
+}
+
+.mode-toggle-button {
+  background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.mode-toggle-button.active {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+}
+
+.mode-toggle-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.mode-toggle-button.active:hover {
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.mode-description {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #546e7a;
+  font-weight: 500;
 }
 
 .manager-section {

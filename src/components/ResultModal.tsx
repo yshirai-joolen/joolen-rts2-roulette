@@ -11,10 +11,16 @@ interface ResultModalProps {
   isOpen: boolean;
   result: RouletteItem | null;
   onClose: () => void;
+  isExclusionMode: boolean;
+  onExcludeItem: (itemId: number) => void;
 }
 
-const ResultModal: React.FC<ResultModalProps> = ({ isOpen, result, onClose }) => {
+const ResultModal: React.FC<ResultModalProps> = ({ isOpen, result, onClose, isExclusionMode, onExcludeItem }) => {
   if (!isOpen || !result) return null;
+
+  const handleExclude = () => {
+    onExcludeItem(result.id);
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -34,6 +40,11 @@ const ResultModal: React.FC<ResultModalProps> = ({ isOpen, result, onClose }) =>
         </div>
         
         <div className="result-actions">
+          {isExclusionMode && (
+            <button onClick={handleExclude} className="exclude-button">
+              🚫 このアイテムを除外
+            </button>
+          )}
           <button onClick={onClose} className="close-button">
             閉じる
           </button>

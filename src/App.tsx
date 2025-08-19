@@ -30,6 +30,8 @@ function App() {
   const [result, setResult] = useState<RouletteItem | null>(null);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [isExclusionMode, setIsExclusionMode] = useState(false);
+  const [excludedItems, setExcludedItems] = useState<Set<number>>(new Set());
 
   // ローカルストレージから履歴を読み込み
   useEffect(() => {
@@ -76,6 +78,36 @@ function App() {
     setResult(null);
   };
 
+  const toggleExclusionMode = () => {
+    setIsExclusionMode(!isExclusionMode);
+    if (!isExclusionMode) {
+      // モードをOFFにする際は除外を全てリセット
+      setExcludedItems(new Set());
+    }
+  };
+
+  const excludeItem = (itemId: number) => {
+    setExcludedItems(prev => {
+      const newSet = new Set(prev);
+      newSet.add(itemId);
+      return newSet;
+    });
+    closeResultModal();
+  };
+
+  const includeItem = (itemId: number) => {
+    setExcludedItems(prev => {
+      const newSet = new Set(prev);
+      newSet.delete(itemId);
+      return newSet;
+    });
+  };
+
+  // 除外モードでフィルタリングされたアイテム
+  const activeItems = isExclusionMode 
+    ? items.filter(item => !excludedItems.has(item.id))
+    : items;
+
   return (
     <div className="App">
       <header className="App-header">
@@ -86,17 +118,41 @@ function App() {
       <main className="App-main">
         <div className="app-container">
           <div className="roulette-section">
-            {items.length > 0 ? (
-              <Roulette items={items} onResult={handleResult} />
+            <div className="roulette-controls">
+              <div className="exclusion-mode-toggle">
+                <button 
+                  onClick={toggleExclusionMode}
+                  className={`mode-toggle-button ${isExclusionMode ? 'active' : ''}`}
+                >
+                  {isExclusionMode ? '🚫 除外モード ON' : '🎯 通常モード'}
+                </button>
+                <div className="mode-description">
+                  {isExclusionMode ? '当選者を除外していきます' : 'すべてのアイテムが対象です'}
+                </div>
+              </div>
+            </div>
+            {activeItems.length > 0 ? (
+              <Roulette items={activeItems} onResult={handleResult} />
             ) : (
               <div className="no-items-message">
-                <p>アイテムを追加してルーレットを開始しましょう！</p>
+                <p>
+                  {items.length === 0 
+                    ? 'アイテムを追加してルーレットを開始しましょう！'
+                    : 'すべてのアイテムが除外されました。除外モードをOFFにするか、アイテムを復活させてください。'
+                  }
+                </p>
               </div>
             )}
           </div>
           
           <div className="manager-section">
-            <ItemManager items={items} onItemsChange={setItems} />
+            <ItemManager 
+              items={items} 
+              onItemsChange={setItems} 
+              excludedItems={excludedItems}
+              onIncludeItem={includeItem}
+              isExclusionMode={isExclusionMode}
+            />
           </div>
           
           <div className="history-section">
@@ -109,6 +165,8 @@ function App() {
         isOpen={isResultModalOpen}
         result={result}
         onClose={closeResultModal}
+        isExclusionMode={isExclusionMode}
+        onExcludeItem={excludeItem}
       />
     </div>
   );

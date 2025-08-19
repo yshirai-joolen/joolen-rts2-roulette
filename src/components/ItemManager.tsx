@@ -10,9 +10,12 @@ interface RouletteItem {
 interface ItemManagerProps {
   items: RouletteItem[];
   onItemsChange: (items: RouletteItem[]) => void;
+  excludedItems: Set<number>;
+  onIncludeItem: (itemId: number) => void;
+  isExclusionMode: boolean;
 }
 
-const ItemManager: React.FC<ItemManagerProps> = ({ items, onItemsChange }) => {
+const ItemManager: React.FC<ItemManagerProps> = ({ items, onItemsChange, excludedItems, onIncludeItem, isExclusionMode }) => {
   const [newItemLabel, setNewItemLabel] = useState('');
   const [newItemColor, setNewItemColor] = useState('#3498db');
 
@@ -72,32 +75,50 @@ const ItemManager: React.FC<ItemManagerProps> = ({ items, onItemsChange }) => {
       </div>
 
       <div className="items-list">
-        {items.map((item) => (
-          <div key={item.id} className="item-row">
-            <div 
-              className="item-color-indicator"
-              style={{ backgroundColor: item.color }}
-            ></div>
-            <input
-              type="text"
-              value={item.label}
-              onChange={(e) => updateItem(item.id, { label: e.target.value })}
-              className="item-edit-input"
-            />
-            <input
-              type="color"
-              value={item.color}
-              onChange={(e) => updateItem(item.id, { color: e.target.value })}
-              className="item-color-input"
-            />
-            <button 
-              onClick={() => removeItem(item.id)}
-              className="remove-button"
-            >
-              削除
-            </button>
-          </div>
-        ))}
+        {items.map((item) => {
+          const isExcluded = excludedItems.has(item.id);
+          return (
+            <div key={item.id} className={`item-row ${isExcluded ? 'excluded' : ''}`}>
+              <div 
+                className="item-color-indicator"
+                style={{ backgroundColor: item.color }}
+              ></div>
+              <input
+                type="text"
+                value={item.label}
+                onChange={(e) => updateItem(item.id, { label: e.target.value })}
+                className="item-edit-input"
+                disabled={isExcluded}
+              />
+              <input
+                type="color"
+                value={item.color}
+                onChange={(e) => updateItem(item.id, { color: e.target.value })}
+                className="item-color-input"
+                disabled={isExcluded}
+              />
+              {isExclusionMode && isExcluded ? (
+                <button 
+                  onClick={() => onIncludeItem(item.id)}
+                  className="include-button"
+                >
+                  復活
+                </button>
+              ) : (
+                <button 
+                  onClick={() => removeItem(item.id)}
+                  className="remove-button"
+                  disabled={isExcluded}
+                >
+                  削除
+                </button>
+              )}
+              {isExclusionMode && isExcluded && (
+                <span className="excluded-label">除外中</span>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {items.length === 0 && (

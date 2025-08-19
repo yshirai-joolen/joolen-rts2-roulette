@@ -102,6 +102,18 @@
   transform: translateX(4px);
 }
 
+.item-row.excluded {
+  background: rgba(240, 240, 240, 0.8);
+  border-color: rgba(231, 76, 60, 0.3);
+  opacity: 0.7;
+}
+
+.item-row.excluded:hover {
+  background: rgba(245, 245, 245, 0.9);
+  border-color: rgba(231, 76, 60, 0.4);
+  transform: translateX(2px);
+}
+
 .item-color-indicator {
   width: 24px;
   height: 24px;
@@ -157,6 +169,49 @@
 .remove-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(234, 130, 7, 0.3);
+}
+
+.remove-button:disabled {
+  background: rgba(189, 195, 199, 0.8);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.include-button {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.2);
+}
+
+.include-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+}
+
+.excluded-label {
+  font-size: 11px;
+  color: #e74c3c;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  background: rgba(231, 76, 60, 0.1);
+  border-radius: 4px;
+}
+
+.item-edit-input:disabled,
+.item-color-input:disabled {
+  background: rgba(240, 240, 240, 0.8);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .empty-message {
